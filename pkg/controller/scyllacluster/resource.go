@@ -144,10 +144,6 @@ func servicePorts(cluster *scyllav1.ScyllaCluster) []corev1.ServicePort {
 			Port: 5090,
 		},
 		{
-			Name: "node-exporter",
-			Port: 9100,
-		},
-		{
 			Name: portNameCQL,
 			Port: 9042,
 		},
@@ -583,10 +579,6 @@ func containerPorts(c *scyllav1.ScyllaCluster) []corev1.ContainerPort {
 		{
 			Name:          "prometheus",
 			ContainerPort: 9180,
-		},
-		{
-			Name:          "node-exporter",
-			ContainerPort: 9100,
 		},
 	}
 
