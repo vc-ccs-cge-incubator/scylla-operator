@@ -19,5 +19,4 @@ RUN echo 'APT::Acquire::Retries "5";' > /etc/apt/apt.conf.d/80-retries && \
 COPY --from=builder /go/src/github.com/scylladb/scylla-operator/scylla-operator /usr/bin/
 RUN ln -s /usr/bin/scylla-operator /scylla-operator
 COPY --from=builder /go/src/github.com/scylladb/scylla-operator/scylla-operator-tests /usr/bin/
-COPY ./hack/gke /usr/local/lib/scylla-operator/gke
 ENTRYPOINT ["/usr/bin/scylla-operator"]
