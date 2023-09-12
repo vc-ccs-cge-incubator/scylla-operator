@@ -4,7 +4,7 @@ SHELL :=/bin/bash -euEo pipefail -O inherit_errexit
 
 comma :=,
 
-IMAGE_TAG ?= 1.9
+IMAGE_TAG ?= 1.9-arm64
 IMAGE_REF ?= docker.io/scylladb/scylla-operator:$(IMAGE_TAG)
 
 MAKE_REQUIRED_MIN_VERSION:=4.2 # for SHELLSTATUS
@@ -113,7 +113,7 @@ endif
 # $1 - package name
 define build-package
 	$(if $(GO_BUILD_BINDIR),mkdir -p '$(GO_BUILD_BINDIR)',)
-	$(strip CGO_ENABLED=0 $(GO) build $(GO_BUILD_FLAGS) $(GO_LD_FLAGS) \
+	$(strip CGO_ENABLED=0 GOOS=linux GOARCH=arm64 $(GO) build $(GO_BUILD_FLAGS) $(GO_LD_FLAGS) \
 		$(if $(GO_BUILD_BINDIR),-o '$(GO_BUILD_BINDIR)/$(notdir $(1))$(GOEXE)',) \
 	$(1))
 
