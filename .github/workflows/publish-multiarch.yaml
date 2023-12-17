@@ -26,10 +26,6 @@ jobs:
       - name: Log in to GH Packages registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
-      - name: Build Image
+      - name: Build & Push Image
         run: |
-          docker buildx build --provenance=false --platform linux/amd64,linux/arm64 -t ghcr.io/${{ github.repository_owner }}/scylla-operator:1.8.0-multiarch -f ./Dockerfile .
-
-      - name: Push to GH Packages
-        run: |
-          docker push ghcr.io/${{ github.repository_owner }}/scylla-operator:1.8.0-multiarch
+          docker buildx build --provenance=false --platform linux/amd64,linux/arm64 -t ghcr.io/${{ github.repository_owner }}/scylla-operator:1.8.0-multiarch -f ./Dockerfile --push .
