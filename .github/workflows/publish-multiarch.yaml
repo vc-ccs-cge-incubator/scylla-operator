@@ -1,0 +1,31 @@
+name: Publish multiarch
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+-multiarch'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: 'arm64,arm'
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to GH Packages registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+
+      - name: Build & Push Image
+        run: |
+          docker buildx build --provenance=false --platform linux/amd64,linux/arm64 -t ghcr.io/${{ github.repository_owner }}/scylla-operator:1.11.1-multiarch -f ./Dockerfile --push .
